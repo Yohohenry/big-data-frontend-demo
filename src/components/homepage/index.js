@@ -1,18 +1,67 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { xml2json } from 'xml-js';
 
 import LeftBar from '../left-bar';
-import SearchForm from '../search-form';
-import SearchResult from '../search-result';
+import SearchForm from './search-form';
 
 import './style.scss';
 
+const PREFIX_CLASS = 'home-page';
+
 export default function Homepage() {
+  const [data, setData] = useState();
+  const [countyOptionsData, setCountyOptionsData] = useState();
+
+  const handleFetchCounty = () => {
+    const apiUrl = 'https://api.nlsc.gov.tw/other/ListCounty';
+    fetch(apiUrl)
+      .then((response) => response.text())
+      .then((xmlResponse) => {
+        const jsonResponse = xml2json(xmlResponse, {
+          compact: true,
+          ignoreComment: true,
+          ignoreDeclaration: true,
+          alwaysChildren: true,
+          textKey: 'text',
+        });
+        setCountyOptionsData(JSON.parse(jsonResponse).countyItems.countyItem);
+      })
+      .catch((error) => {
+        console.log('Error: ', error);
+      });
+  };
+
+  useEffect(() => {
+    handleFetchCounty();
+  }, []);
+
+  const handleSearch = (year, county, town) => {
+    console.log('onsearch', year, county, town);
+    const apiUrl = `https://www.ris.gov.tw/rs-opendata/api/v1/datastore/ODRP019/${year}?COUNTY=${county}&TOWN=${town}`;
+    fetch(apiUrl)
+      .then((response) => response.json())
+      .then((json) => setData(json.result));
+  };
+
   return (
-    <div className="home-page">
+    <div className={PREFIX_CLASS}>
       <LeftBar />
-      <div className="page-content">
-        <SearchForm />
-        <SearchResult />
+      <div className={`${PREFIX_CLASS}__page-content`}>
+        <div className={`${PREFIX_CLASS}__title`}>
+          人口數、戶數按戶別及性別統計
+        </div>
+        <SearchForm
+          onSearch={handleSearch}
+          countyOptionsData={countyOptionsData}
+        />
+        <div className={`${PREFIX_CLASS}__divider`}>
+          <div className={`${PREFIX_CLASS}__divider-text`}>
+            搜尋結果
+          </div>
+        </div>
+        <div className={`${PREFIX_CLASS}__result`}>
+          {data ? `${data.records[1].statistic_yyy}年` : null}
+        </div>
       </div>
     </div>
   );

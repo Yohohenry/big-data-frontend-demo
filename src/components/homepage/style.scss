@@ -1,8 +1,58 @@
 .home-page {
     display: flex;
 
-    .page-content {
+    &__page-content {
         width: 100%;
         padding: 0 100px;
+    }
+
+    &__title {
+        font-size: 32px;
+        font-weight: 400;
+        text-align: center;
+    }
+
+    &__result {
+        display: flex;
+        justify-content: center;
+        position: relative;
+    }
+
+    &__divider {
+        display: flex;
+        justify-content: center;
+        position: relative;
+
+        &::before,
+        &::after {
+            content: '';
+            display: inline-block;
+            width:  44%;
+            height: 1px;
+            position: absolute;
+            background: #B388FF;
+            top: 50%;
+        }
+
+        &::before {
+            margin-left: -40px;
+            transform: translateX(-57%);
+        }
+        &::after {
+            margin-left: 40px;
+            transform: translateX(57%);
+        }
+    }
+
+    &__divider-text {
+        text-align: center;
+        color: #B388FF;
+        font-size: 13px;
+        font-weight: 500;
+        width: 78px;
+        height: 32px;
+        border-radius: 16px;
+        border: 1px solid #B388FF;
+        line-height: 32px;
     }
 }
