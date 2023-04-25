@@ -22,5 +22,6 @@ module.exports = {
     'no-unused-vars': 'warn',
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'react/jsx-props-no-spreading': 'off',
+    'import/no-extraneous-dependencies': ['warn', { devDependencies: ['**/webpack.*.js'] }],
   },
 };

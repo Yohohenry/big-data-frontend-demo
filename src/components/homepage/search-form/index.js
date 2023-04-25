@@ -24,7 +24,7 @@ const years = [
 
 const propTypes = {
   countyOptionsData: PropTypes.arr,
-  onSearch: PropTypes.function,
+  onSearch: PropTypes.func,
 };
 const defaultProps = {
   countyOptionsData: [],
@@ -35,7 +35,7 @@ function SearchForm({
   countyOptionsData,
   onSearch,
 }) {
-  const [selectedYear, setSelectedYear] = useState(106);
+  const [selectedYear, setSelectedYear] = useState('106');
   const [selectedCounty, setSelectedCounty] = useState(null);
   const [selectedTown, setSelectedTown] = useState(null);
   const [townOptions, setTownOptions] = useState([]);

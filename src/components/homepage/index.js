@@ -3,6 +3,7 @@ import { xml2json } from 'xml-js';
 
 import LeftBar from '../left-bar';
 import SearchForm from './search-form';
+import ResultChart from '../result-chart';
 
 import './style.scss';
 
@@ -10,6 +11,7 @@ const PREFIX_CLASS = 'home-page';
 
 export default function Homepage() {
   const [data, setData] = useState();
+  const [resultTitle, setResultTitle] = useState({});
   const [countyOptionsData, setCountyOptionsData] = useState();
 
   const handleFetchCounty = () => {
@@ -40,7 +42,14 @@ export default function Homepage() {
     const apiUrl = `https://www.ris.gov.tw/rs-opendata/api/v1/datastore/ODRP019/${year}?COUNTY=${county}&TOWN=${town}`;
     fetch(apiUrl)
       .then((response) => response.json())
-      .then((json) => setData(json.result));
+      .then((json) => {
+        setResultTitle({
+          year,
+          county,
+          town,
+        });
+        setData(json.responseData);
+      });
   };
 
   return (
@@ -60,7 +69,14 @@ export default function Homepage() {
           </div>
         </div>
         <div className={`${PREFIX_CLASS}__result`}>
-          {data ? `${data.records[1].statistic_yyy}年` : null}
+          {data
+            ? (
+              <ResultChart
+                populationTitle={`${resultTitle.year}年 ${resultTitle.county} ${resultTitle.town}`}
+                rawData={data}
+              />
+            )
+            : null}
         </div>
       </div>
     </div>
