@@ -68,16 +68,14 @@ export default function Homepage() {
             搜尋結果
           </div>
         </div>
-        <div className={`${PREFIX_CLASS}__result`}>
-          {data
-            ? (
-              <ResultChart
-                populationTitle={`${resultTitle.year}年 ${resultTitle.county} ${resultTitle.town}`}
-                rawData={data}
-              />
-            )
-            : null}
-        </div>
+        {data
+          ? (
+            <ResultChart
+              populationTitle={`${resultTitle.year}年 ${resultTitle.county} ${resultTitle.town}`}
+              rawData={data}
+            />
+          )
+          : null}
       </div>
     </div>
   );

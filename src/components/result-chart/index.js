@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import Highcharts from 'highcharts';
@@ -22,10 +22,11 @@ function ResultChart({
   populationTitle,
   rawData,
 }) {
+  const chartComponentRef = useRef(null);
+  const chart2ComponentRef = useRef(null);
   const populationOptions = {
     chart: {
       type: 'column',
-      width: 1000,
       height: 600,
     },
     title: {
@@ -87,19 +88,11 @@ function ResultChart({
         color: '#c29fff',
       },
     ],
-    // responsive: {
-    //   rules: [{
-    //     condition: {
-    //       maxWidth: 1000,
-    //     },
-    //   }],
-    // },
   };
 
   const householdOptions = {
     chart: {
       type: 'pie',
-      width: 1000,
       height: 600,
     },
     title: {
@@ -173,10 +166,12 @@ function ResultChart({
       <HighchartsReact
         highcharts={Highcharts}
         options={populationOptions}
+        ref={chartComponentRef}
       />
       <HighchartsReact
         highcharts={Highcharts}
         options={householdOptions}
+        ref={chart2ComponentRef}
       />
     </div>
   );

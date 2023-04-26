@@ -129,6 +129,7 @@ function SearchForm({
       </FormControl>
       <Button
         variant="contained"
+        className={`${PREFIX_CLASS}__submit-button`}
         disabled={!selectedCounty || !selectedTown}
         onClick={() => onSearch(selectedYear, selectedCounty.label, selectedTown.label)}
       >
