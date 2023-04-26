@@ -25,12 +25,22 @@ function ResultChart({
   const populationOptions = {
     chart: {
       type: 'column',
+      width: 1000,
+      height: 600,
     },
     title: {
       text: populationTitle,
+      style: {
+        color: 'black',
+        fontSize: '2rem',
+      },
     },
     subtitle: {
       text: '人口數統計',
+      style: {
+        color: 'black',
+        fontSize: '1rem',
+      },
     },
     xAxis: {
       title: {
@@ -43,34 +53,64 @@ function ResultChart({
     yAxis: {
       min: 0,
       title: {
+        align: 'high',
+        y: -10,
+        x: -15,
+        offset: 0,
+        rotation: 0,
         text: '數量',
+      },
+      labels: {
+        step: 0,
       },
       tickInterval: 2500,
     },
     credits: {
       enabled: false,
     },
+    plotOptions: {
+      series: {
+        dataLabels: {
+          enabled: true,
+        },
+      },
+    },
     series: [
       {
         name: '男性',
         data: [getSum(rawData, 'household_ordinary_m'), getSum(rawData, 'household_single_m')],
+        color: '#7d5fb2',
       },
       {
         name: '女性',
         data: [getSum(rawData, 'household_ordinary_f'), getSum(rawData, 'household_single_f')],
+        color: '#c29fff',
       },
     ],
+    // responsive: {
+    //   rules: [{
+    //     condition: {
+    //       maxWidth: 1000,
+    //     },
+    //   }],
+    // },
   };
 
   const householdOptions = {
     chart: {
       type: 'pie',
+      width: 1000,
+      height: 600,
     },
     title: {
       text: '',
     },
     subtitle: {
       text: '戶數統計',
+      style: {
+        color: 'black',
+        fontSize: '1rem',
+      },
     },
     xAxis: {
       title: {
@@ -86,6 +126,23 @@ function ResultChart({
         text: '數量',
       },
       tickInterval: 2500,
+    },
+    plotOptions: {
+      pie: {
+        allowPointSelect: true,
+        cursor: 'pointer',
+        borderRadius: 5,
+        dataLabels: {
+          enabled: true,
+          format: '{point.percentage:.1f} %',
+          distance: 50,
+          filter: {
+            property: 'percentage',
+            operator: '>',
+            value: 4,
+          },
+        },
+      },
     },
     credits: {
       enabled: false,
@@ -98,12 +155,15 @@ function ResultChart({
         y: getPercentage(rawData, 'household_ordinary_total', 'household_single_total'),
         sliced: true,
         selected: true,
+        color: '#626EB2',
       }, {
         name: '獨立生活',
         y: getPercentage(rawData, 'household_single_total', 'household_ordinary_total'),
         sliced: true,
         selected: true,
+        color: '#A3B1FF',
       }],
+      showInLegend: true,
     },
     ],
   };
