@@ -7,8 +7,6 @@ import { getSum, getPercentage } from './util';
 
 require('highcharts/modules/exporting')(Highcharts);
 
-const PREFIX_CLASS = 'result-chart';
-
 const propTypes = {
   populationTitle: PropTypes.string,
   rawData: PropTypes.arr,
@@ -22,12 +20,26 @@ function ResultChart({
   populationTitle,
   rawData,
 }) {
+  const [windowSize, setWindowSize] = useState([
+    window.innerWidth,
+    window.innerHeight,
+  ]);
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowSize([window.innerWidth, window.innerHeight]);
+    };
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  }, []);
   const chartComponentRef = useRef(null);
   const chart2ComponentRef = useRef(null);
   const populationOptions = {
     chart: {
       type: 'column',
-      height: 600,
     },
     title: {
       text: populationTitle,
@@ -93,7 +105,6 @@ function ResultChart({
   const householdOptions = {
     chart: {
       type: 'pie',
-      height: 600,
     },
     title: {
       text: '',
@@ -167,11 +178,25 @@ function ResultChart({
         highcharts={Highcharts}
         options={populationOptions}
         ref={chartComponentRef}
+        containerProps={{
+          style: {
+            height: windowSize[0] * 0.41,
+            maxHeight: 600,
+            minHeight: 400,
+          },
+        }}
       />
       <HighchartsReact
         highcharts={Highcharts}
         options={householdOptions}
         ref={chart2ComponentRef}
+        containerProps={{
+          style: {
+            height: windowSize[0] * 0.41,
+            maxHeight: 600,
+            minHeight: 400,
+          },
+        }}
       />
     </div>
   );

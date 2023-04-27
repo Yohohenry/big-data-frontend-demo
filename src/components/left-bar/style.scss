@@ -1,5 +1,4 @@
 .leftbar {
-    position: fixed;
     writing-mode: vertical-rl;
     text-orientation: mixed;
     letter-spacing: 0.18em;
@@ -15,6 +14,7 @@
 
 @media only screen and (max-width: 700px) {
     .leftbar {
+        position: fixed;
         width: auto;
         max-height: none;
         left: -42px;

@@ -54,18 +54,24 @@ export default function Homepage() {
 
   return (
     <div className={PREFIX_CLASS}>
-      <LeftBar />
+      <div className={`${PREFIX_CLASS}__leftbar`}>
+        <LeftBar />
+      </div>
+
       <div className={`${PREFIX_CLASS}__page-content`}>
-        <div className={`${PREFIX_CLASS}__title`}>
-          人口數、戶數按戶別及性別統計
-        </div>
-        <SearchForm
-          onSearch={handleSearch}
-          countyOptionsData={countyOptionsData}
-        />
-        <div className={`${PREFIX_CLASS}__divider`}>
-          <div className={`${PREFIX_CLASS}__divider-text`}>
-            搜尋結果
+        <div>
+
+          <div className={`${PREFIX_CLASS}__title`}>
+            人口數、戶數按戶別及性別統計
+          </div>
+          <SearchForm
+            onSearch={handleSearch}
+            countyOptionsData={countyOptionsData}
+          />
+          <div className={`${PREFIX_CLASS}__divider`}>
+            <div className={`${PREFIX_CLASS}__divider-text`}>
+              搜尋結果
+            </div>
           </div>
         </div>
         {data
