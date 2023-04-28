@@ -9,6 +9,7 @@ import {
 
 import Navbar from './components/navbar';
 import HomePage from './components/homepage';
+import SearchForm from './components/homepage/search-form';
 
 function App() {
   return (
@@ -21,7 +22,13 @@ function App() {
           exact
           path="/"
           element={<HomePage />}
-        />
+        >
+          <Route
+            path=":year/:county/:town"
+            element={<SearchForm />}
+          />
+        </Route>
+
       </Routes>
     </Router>
   );

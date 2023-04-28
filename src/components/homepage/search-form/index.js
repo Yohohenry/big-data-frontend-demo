@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { xml2json } from 'xml-js';
+import {
+  useParams,
+} from 'react-router-dom';
 
 import {
   FormControl,
@@ -35,9 +38,10 @@ function SearchForm({
   countyOptionsData,
   onSearch,
 }) {
-  const [selectedYear, setSelectedYear] = useState('106');
-  const [selectedCounty, setSelectedCounty] = useState(null);
-  const [selectedTown, setSelectedTown] = useState(null);
+  const defaultParam = useParams();
+  const [selectedYear, setSelectedYear] = useState(defaultParam?.years || '106');
+  const [selectedCounty, setSelectedCounty] = useState(defaultParam?.county || null);
+  const [selectedTown, setSelectedTown] = useState(defaultParam?.town || null);
   const [townOptions, setTownOptions] = useState([]);
 
   const countyOptions = countyOptionsData.map((county) => {
@@ -49,8 +53,8 @@ function SearchForm({
     };
   });
 
-  const handleFetchTown = () => {
-    const apiUrl = `https://api.nlsc.gov.tw/other/ListTown1/${selectedCounty?.value}`;
+  const handleFetchTown = useCallback((county) => {
+    const apiUrl = `https://api.nlsc.gov.tw/other/ListTown1/${county?.value}`;
     fetch(apiUrl)
       .then((response) => response.text())
       .then((xmlResponse) => {
@@ -75,12 +79,13 @@ function SearchForm({
       .catch((error) => {
         console.log('Error: ', error);
       });
-  };
+  }, []);
 
-  useEffect(() => {
-    handleFetchTown();
+  const handleSelectCounty = (newCountyValue) => {
+    setSelectedCounty(newCountyValue);
+    handleFetchTown(newCountyValue);
     setSelectedTown(null);
-  }, [selectedCounty]);
+  };
 
   return (
     <div className={PREFIX_CLASS}>
@@ -105,7 +110,7 @@ function SearchForm({
           value={selectedCounty}
           options={countyOptions}
           onChange={(event, newValue) => {
-            setSelectedCounty(newValue);
+            handleSelectCounty(newValue);
           }}
           renderInput={(params) => (
             <TextField {...params} label="縣/市" placeholder="請選擇 縣/市" />

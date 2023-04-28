@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import {
+  useNavigate, useParams,
+} from 'react-router-dom';
 import { xml2json } from 'xml-js';
 
 import LeftBar from '../left-bar';
@@ -13,6 +16,9 @@ export default function Homepage() {
   const [data, setData] = useState();
   const [resultTitle, setResultTitle] = useState({});
   const [countyOptionsData, setCountyOptionsData] = useState();
+  const params = useParams();
+
+  const navigate = useNavigate();
 
   const handleFetchCounty = () => {
     const apiUrl = 'https://api.nlsc.gov.tw/other/ListCounty';
@@ -33,10 +39,6 @@ export default function Homepage() {
       });
   };
 
-  useEffect(() => {
-    handleFetchCounty();
-  }, []);
-
   const handleSearch = (year, county, town) => {
     console.log('onsearch', year, county, town);
     const apiUrl = `https://www.ris.gov.tw/rs-opendata/api/v1/datastore/ODRP019/${year}?COUNTY=${county}&TOWN=${town}`;
@@ -50,7 +52,15 @@ export default function Homepage() {
         });
         setData(json.responseData);
       });
+    navigate(`/${year}/${county}/${town}`);
   };
+
+  useEffect(() => {
+    if (params?.year && params?.county && params.town) {
+      handleSearch(params?.year, params?.county, params?.town);
+    }
+    handleFetchCounty();
+  }, []);
 
   return (
     <div className={PREFIX_CLASS}>
